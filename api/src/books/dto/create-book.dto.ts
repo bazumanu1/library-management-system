@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export class CreateBookDto {
   @IsString() @IsNotEmpty() @MaxLength(200)
@@ -20,6 +20,6 @@ export class CreateBookDto {
   @IsOptional() @IsString() @MaxLength(2000)
   description?: string;
 
-  @IsOptional() @Type(() => Date)
+  @IsOptional() @Type(() => Date) @IsDate()
   publishedAt?: Date;
 }
