@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { BooksService } from './books.service.js';
+import { Role } from '@prisma/client';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
+import { Roles } from '../auth/roles.decorator.js';
+import { RolesGuard } from '../auth/roles.guard.js';
 import { CreateBookDto } from './dto/create-book.dto.js';
 import { UpdateBookDto } from './dto/update-book.dto.js';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
-import { RolesGuard } from '../auth/roles.guard.js';
-import { Roles } from '../auth/roles.decorator.js';
-import { Role } from '@prisma/client';
+import { BooksService } from './books.service.js';
 
 @Controller('books')
 export class BooksController {
@@ -27,12 +27,16 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) { return this.booksService.findOne(id); }
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.booksService.findOne(id);
+  }
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.LIBRARIAN)
-  create(@Body() dto: CreateBookDto) { return this.booksService.create(dto); }
+  create(@Body() dto: CreateBookDto) {
+    return this.booksService.create(dto);
+  }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -44,5 +48,7 @@ export class BooksController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.LIBRARIAN)
-  remove(@Param('id', ParseIntPipe) id: number) { return this.booksService.remove(id); }
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.booksService.remove(id);
+  }
 }
