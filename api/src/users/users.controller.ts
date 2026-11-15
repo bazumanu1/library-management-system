@@ -6,5 +6,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
 export class UsersController {
   @Get('profile')
   @UseGuards(JwtAuthGuard)
-  profile(@Req() req: Request & { user: unknown }) { return req.user; }
+  profile(@Req() req: Request & { user: { id: number; name: string; email: string; role: string } }) {
+    return req.user;
+  }
 }

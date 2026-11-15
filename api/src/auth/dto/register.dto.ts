@@ -1,12 +1,20 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class RegisterDto {
-  @IsString() @IsNotEmpty() @MaxLength(100)
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
   name!: string;
 
-  @IsEmail() @MaxLength(254)
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim().toLowerCase() : value))
+  @IsEmail()
+  @MaxLength(254)
   email!: string;
 
-  @IsString() @MinLength(8) @MaxLength(72)
+  @IsString()
+  @MinLength(8)
+  @MaxLength(72)
   password!: string;
 }
